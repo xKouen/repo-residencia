@@ -2,7 +2,7 @@ export const mockDAtaTeam =[
     {
         id:1,
         name:"Anna",
-        email:"Annasotoochoa123@gmial.com",
+        email:"Annitalahuerfanita69@gmail.com",
         phone:"6681335606",
         age:25,
         access:"admin",
@@ -10,7 +10,7 @@ export const mockDAtaTeam =[
     {
         id:2,
         name:"Yuqui",
-        email:"YuquitoHentai@gmial.com",
+        email:"Yuquisenior@gmail.com",
         phone:"668465656",
         age:25,
         access:"Manager",
