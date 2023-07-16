@@ -15,14 +15,14 @@ const Topbar = () => {
   const colorMode = useContext(ColorModeContext);
 
   return (
-    <div style={{ backgroundColor: theme.palette.mode === "light" ? "rgba(128, 128, 128, 0.5)" : "rgba(0, 0, 0, 0.5)" }}>
+    <div style={{ backgroundColor: theme.palette.mode === "light" ? "#F2F2FC" : "#28273F" }}>
       {/* Topbar */}
       <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
         {/* SEARCH BAR */}
         <Box display="flex" alignItems="center" flex={1} p={2}>
           {/* Imagen con borde redondeado */}
           <Box
-            display="inline-block"
+            display="inline-block"  
             borderRadius="50%"
             overflow="hidden"
             width="50px"
@@ -46,26 +46,26 @@ const Topbar = () => {
           alignItems="center"
           width="400px" 
         >
-          <Box
-            display="flex"
-            backgroundColor={theme.palette.mode === "light" ? "white" : colors.primary[400]}
-            borderRadius="15px"
-            sx={{
-              border: theme.palette.mode === "light" ? "1px solid gray" : "none",
-            }}
-          >
-            <InputBase
-              sx={{
-                flex: 1,
-                pl: 1,
-                color: theme.palette.mode === "light" ? "black" : "white",
-              }}
-              placeholder="Buscar elemento..."
-            />
-            <IconButton sx={{ p: 1, color: theme.palette.mode === "light" ? "black" : "white" }}>
-              <SearchIcon />
-            </IconButton>
-          </Box>
+        <Box
+  display="flex"
+  backgroundColor={theme.palette.mode === "light" ? "white" : "#f4f4f4"}
+  borderRadius="15px"
+  sx={{
+    border: theme.palette.mode === "light" ? "1px solid gray" : "none",
+  }}
+>
+  <InputBase
+    sx={{
+      flex: 1,
+      pl: 1,
+      color: theme.palette.mode === "light" ? "black" : "black", // Cambia el color del texto a negro en modo dark
+    }}
+    placeholder="Buscar elemento..."
+  />
+  <IconButton sx={{ p: 1, color: theme.palette.mode === "light" ? "black" : "black" }}> {/* Cambia el color del ícono de la lupa a negro en modo dark */}
+    <SearchIcon />
+  </IconButton>
+</Box>
 
           {/* ICON BUTTONS */}
           <Box display="flex">

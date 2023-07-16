@@ -20,8 +20,8 @@ export const tokens = (mode) => ({
           100: "#d0d1d5",
           200: "#a1a4ab",
           300: "#727681",
-          400: "#1F2A40",
-          500: "#141b2d",
+          400: "#28273F",// cambia el color del sidebar 
+          500: "#1F1C30", //cambiar el fondo 
           600: "#101624",
           700: "#0c101b",
           800: "#080b12",
@@ -77,8 +77,8 @@ export const tokens = (mode) => ({
           100: "#040509",
           200: "#080b12",
           300: "#0c101b",
-          400: "#f2f0f0", // manually changed
-          500: "#141b2d",
+          400: "#F2F2FC", // manually changed
+          500: "#CFD0EC",
           600: "#1F2A40",
           700: "#727681",
           800: "#a1a4ab",
