@@ -6,10 +6,11 @@ import Topbar from "./scenes/global/topbar";
 import  Dashboard from "./scenes/dashboard";
 import Sidebar from "./scenes/global/sidebar";
 
-/*
-import { Users } from "./scenes/users";
-import { Programs } from "./scenes/programs";
-*/
+
+import Users from './scenes/users';
+
+/*import { Programs } from "./scenes/programs";*/
+
 function App() {
   const [theme, colorMode] = useMode();
 
@@ -23,8 +24,9 @@ function App() {
             <Topbar/>
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              {/* <Route path="/users" element={<Users />} /> */}
-              {/* <Route path="/programs" element={<Programs />} /> */}
+               {/* <Route path="/programs" element={<Programs />} /> */}
+               <Route path="/users" element={<Users />} /> 
+             
             </Routes>
           </main>
         </div>
