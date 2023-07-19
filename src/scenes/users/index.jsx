@@ -8,7 +8,7 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/header";
 import "react-pro-sidebar/dist/css/styles.css";
-
+import SelectUser from "../../components/selectUser";
 const User = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -105,6 +105,7 @@ const User = () => {
     <Box m="20px">
    
     <Header title="Usuarios" subtitle="Lista de usuarios activos" />
+ 
     <Box
       m="40px 0 0 0"
       height="75vh"
@@ -200,7 +201,7 @@ const User = () => {
             size="small"
             label="Email"
           />
-          {/*<SelectUser value={userData.role} onChange={handleChange} />*/}
+          <SelectUser value={userData.role} onChange={handleChange} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal} color="primary">

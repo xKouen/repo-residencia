@@ -1,20 +1,24 @@
-import { MenuItem, Select, InputLabel, FormControl } from "@mui/material";
+import { Typography, Box, useTheme } from "@mui/material";
+import { tokens } from "../theme";
 
-export default function SelectUser({ value, onChange }) {
+const Header = ({ title, subtitle }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   return (
-    <FormControl variant="outlined" size="small" fullWidth>
-      <InputLabel htmlFor="user-role">Seleccionar Rol</InputLabel>
-      <Select
-        onChange={onChange}
-        name="role"
-        value={value}
-        label="Seleccionar Rol"
-        id="user-role"
+    <Box mb="30px">
+      <Typography
+        variant="h2"
+        color={colors.grey[100]}
+        fontWeight="bold"
+        sx={{ m: "0 0 5px 0" }}
       >
-        <MenuItem value="admin">Admin</MenuItem>
-        <MenuItem value="manager">Manager</MenuItem>
-        <MenuItem value="user">Usuario</MenuItem>
-      </Select>
-    </FormControl>
+        {title}
+      </Typography>
+      <Typography variant="h5" color={colors.greenAccent[400]}>
+        {subtitle}
+      </Typography>
+    </Box>
   );
-}
+};
+
+export default Header;
