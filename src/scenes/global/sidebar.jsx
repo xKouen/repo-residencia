@@ -1,20 +1,14 @@
 import { useState } from "react";
-
+import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
-import { tokens } from "../../theme";
-import {
-  ProSidebar,
-  Menu,
-  MenuItem,
- 
-} from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-import HomeIcon from "@mui/icons-material/Home";
-import PeopleIcon from "@mui/icons-material/People";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import MenuIcon from '@mui/icons-material/Menu';
+import { tokens } from "../../theme";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -52,10 +46,10 @@ const Sidebar = () => {
           padding: "5px 35px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
-          color: "#BC955A !important",
+          color: "#868dfb !important",
         },
         "& .pro-menu-item.active": {
-          color: "#BC955A !important",
+          color: "#6870fa !important",
         },
       }}
     >
@@ -64,7 +58,7 @@ const Sidebar = () => {
           {/* LOGO AND MENU ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <MenuIcon /> : undefined}
+            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 20px 0",
               color: colors.grey[100],
@@ -78,10 +72,10 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  Menú
+                 Menú
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuIcon />
+                  <MenuOutlinedIcon />
                 </IconButton>
               </Box>
             )}
@@ -108,7 +102,7 @@ const Sidebar = () => {
                  Anna Soto
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Admin
+                Admin
                 </Typography>
               </Box>
             </Box>
@@ -117,35 +111,36 @@ const Sidebar = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Inicio"
-              to="/"
-              icon={<HomeIcon />}
+              to="/dashboard"
+              icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-         {!isCollapsed && (
-              <Typography
-                variant="h6"
-                color={colors.grey[300]}
-                sx={{ m: "15px 0 5px 20px" }}
-              >
-                Ayuntamiento
-              </Typography>
-            )}
-           
+
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              Datos
+            </Typography>
             <Item
               title="Usuarios"
-              to="/users"
-              icon={<PeopleIcon />}
+              to="/user"
+              icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              
             />
             <Item
               title="Programas"
               to="/programs"
-              icon={<LibraryBooksIcon />}
+              icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+          
+           
           </Box>
         </Menu>
       </ProSidebar>

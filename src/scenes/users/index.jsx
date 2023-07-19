@@ -8,6 +8,8 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/header";
 import SelectUser from "../../components/selectUser"; // Make sure you have the correct path to the SelectUser component
+import "react-pro-sidebar/dist/css/styles.css";
+import { Switch, Route } from "react-router-dom";
 
 const User = () => {
   const theme = useTheme();
