@@ -1,0 +1,69 @@
+.button {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    top: 150px;
+    right: 25px;
+    border-radius: 8px;
+    background-color: #3E4396;
+    color: #fff;
+    width: 150px;
+    height: 50px;
+    align-items: center;
+    font-size: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    border: 1px;
+  
+    &:hover {
+      background-color: #2E7C67;
+    }
+  }
+  
+   .dialog {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    min-width: 300px;
+    max-width: 500px;
+    min-height: 200px;
+   }
+
+
+
+.contained-button {
+    border-radius: 8px;
+    background-color: #3e4396;
+    color: #fff;
+    width: 150px;
+    height: 50px;
+    font-size: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    border: 1px solid;
+    &:hover {
+      background-color: #2e7c67;
+    }
+  }
+  
+  // Clase para el botón con el color "primary"
+  .primary-button {
+    background-color: #3f51b5;
+    color: #fff;
+    &:hover {
+      background-color: #2f3f74;
+    }
+  }
+  
+
+.centered-alert {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.err{
+  position: absolute;
+  top: calc(100% - 500px); /* Ajusta el valor según la separación que desees entre el modal y el Snackbar */
+  left: 50%; /* Posiciona el Snackbar en el centro horizontal */
+  transform: translateX(-49%);
+}

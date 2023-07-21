@@ -74,7 +74,7 @@ const User = () => {
       flex: 1,
       renderCell: ({ row: { access } }) => {
         return (
-          <Box
+          <Box 
             width="60%"
             m="0 auto"
             p="5px"
@@ -137,7 +137,7 @@ const User = () => {
       }}
     >
       
-      <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
+      <DataGrid  rows={mockDataTeam} columns={columns} />
         {/* Botón flotante para abrir el modal */}
         <Button
   variant="contained"

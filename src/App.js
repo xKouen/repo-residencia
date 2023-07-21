@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Topbar from "./scenes/global/topbar";
 import  Dashboard from "./scenes/dashboard";
 import Sidebar from "./scenes/global/sidebar";
+import Programs from "./scenes/programs"
 import { useState } from "react";
 
 import Users from './scenes/users';
@@ -23,8 +24,9 @@ function App() {
           <main className="content">
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/user" element={<Users />} />
+              <Route path="/programs" element={<Programs />} />
              
             </Routes>
           </main>
