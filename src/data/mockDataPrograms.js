@@ -1,4 +1,4 @@
-export const mockDataPrograms = [
+/*export const mockDataPrograms = [
     {
       id: 1,
       name: "Programa 1 arreglas las calles ya que estan de la chingada no mamen como podemos pasar por ahi , si nomas caemos en baches alv, ya areglenelas ",
@@ -21,5 +21,5 @@ export const mockDataPrograms = [
       percentage: "90%",
     },
     // Agrega más objetos de programas si es necesario
-  ];
+  ];*/
   

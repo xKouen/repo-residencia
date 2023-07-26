@@ -1,32 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, useTheme, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField as MuiTextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataTeam } from "../../data/mockData";
+
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/header";
 import "react-pro-sidebar/dist/css/styles.css";
 import SelectUser from "../../components/selectUser";
+import Styles from "./users.module.scss";
+
 const User = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState({
     name: "",
     phone: "",
     email: "",
     role: "",
+    accessLevel: "",
   });
+  const [error, setError] = useState(""); // Estado para el mensaje de error en la tabla
+  const [modalError, setModalError] = useState(""); // Estado para el mensaje de error en el modal
+  const [mockData, setMockData] = useState([]);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
-  const handleOpenModal = () => {
+  const [selectedRole, setSelectedRole] = useState("");
+  useEffect(() => {
+    // Carga los datos almacenados en localStorage cuando el componente se monta
+    const storedData = localStorage.getItem("userData");
+    if (storedData) {
+      setMockData(JSON.parse(storedData));
+    }
+  }, []);
+
+
+    const handleOpenModal = () => {
     setIsModalOpen(true);
   };
+
+  
+  const handleChangeSelectUser = (selectedValue) => {
+    setSelectedRole(selectedValue); // Actualizar el estado de "selectedRole"
+  };
+
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     handleClearFields();
+    setModalError(""); // Limpiar el mensaje de error al cerrar el modal
   };
 
   const handleChange = (e) => {
@@ -37,19 +60,46 @@ const User = () => {
     }));
   };
 
-  const handleSaveData = () => {
-    console.log("Datos guardados:", userData);
-    handleCloseModal();
+ const handleSaveData = () => {
+    if (
+      userData.name &&
+      userData.phone &&
+      userData.email &&
+      selectedRole &&
+      userData.accessLevel
+    ) {
+      const newUser = {
+        name: userData.name,
+        phone: userData.phone,
+        email: userData.email,
+        role:selectedRole,
+        accessLevel: userData.accessLevel,
+      };
+
+      setMockData((prevData) => [...prevData, newUser]);
+
+      localStorage.setItem("userData", JSON.stringify([...mockData, newUser]));
+
+      handleClearFields();
+      handleCloseModal();
+      setModalError("");
+      setError("");
+    } else {
+      setModalError("Falta completar campos en el formulario");
+    }
   };
+
   const handleClearFields = () => {
     setUserData({
       name: "",
       phone: "",
       email: "",
       role: "",
+      accessLevel: "",
     });
   };
-  const columns = [
+
+      const columns = [
     { field: "id", headerName: "ID" },
     {
       field: "name",
@@ -137,7 +187,7 @@ const User = () => {
       }}
     >
       
-      <DataGrid  rows={mockDataTeam} columns={columns} />
+      <DataGrid  rows={mockData} columns={columns} />
         {/* Botón flotante para abrir el modal */}
         <Button
   variant="contained"
@@ -169,17 +219,9 @@ const User = () => {
       </Box>
           {/* Modal para agregar usuarios */}
           <Dialog open={isModalOpen} onClose={handleCloseModal}>
-        <DialogTitle sx={{ gap: "30px" }}>Agregar Usuario</DialogTitle>
-        <DialogContent
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "30px",
-            minWidth: "300px",
-            maxWidth: "500px", // Ancho máximo del contenido del modal
-            minHeight: "200px", // Altura mínima del contenido del modal
-          }}
-        >
+        <div className={Styles.titles}>Agregar Usuario</div>
+        {modalError && <DialogContent  className={Styles.mensajeDeError}>{modalError}</DialogContent>}
+        <DialogContent className={Styles.dialog}>
           <MuiTextField
             onChange={handleChange}
             name="name"
@@ -201,7 +243,7 @@ const User = () => {
             size="small"
             label="Email"
           />
-          <SelectUser value={userData.role} onChange={handleChange} />
+     <SelectUser value={userData.role} onChange={handleChangeSelectUser} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal} color="primary">
@@ -212,6 +254,9 @@ const User = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      
+ {error && <div>{error}</div>}
+
     </Box>
   );
 };

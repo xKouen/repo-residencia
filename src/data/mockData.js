@@ -1,4 +1,4 @@
-import { tokens } from "../theme";
+/*import { tokens } from "../theme";
 
 export const mockDataTeam = [
   {
@@ -136,4 +136,4 @@ export const mockDataInvoices = [
     phone: "(421)445-1189",
     date: "01/12/2021",
   },
-];
+];*/

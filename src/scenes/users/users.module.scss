@@ -1,0 +1,96 @@
+.button {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    top: 150px;
+    right: 25px;
+    border-radius: 8px;
+    background-color: #3E4396;
+    color: #fff;
+    width: 150px;
+    height: 50px;
+    align-items: center;
+    font-size: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    border: 1px;
+  
+    &:hover {
+      background-color: #2E7C67;
+    }
+  }
+  
+   .dialog {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    min-width: 300px;
+    max-width: 500px;
+    min-height: 200px;
+   }
+
+
+
+.contained-button {
+    border-radius: 8px;
+    background-color: #3e4396;
+    color: #fff;
+    width: 150px;
+    height: 50px;
+    font-size: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    border: 1px solid;
+    &:hover {
+      background-color: #2e7c67;
+    }
+  }
+  
+  // Clase para el botón con el color "primary"
+  .primary-button {
+    background-color: #3f51b5;
+    color: #fff;
+    &:hover {
+      background-color: #2f3f74;
+    }
+  }
+  
+
+.centered-alert {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.errorMessage {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: #f44336;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+.errorContent {
+  text-align: center;
+}
+.mensajeDeError {
+  background-color: rgb(196, 69, 69);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.titles {
+  font-size: 18px;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+margin-top: 20px;
+}
