@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 const Dashboard = () => {
   return (
     <Box>
-      <Header title="Transparecnia presupuestal" />
+      <Header title="Transparencia presupuestal" />
     </Box>
   );
 };

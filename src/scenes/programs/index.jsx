@@ -185,7 +185,7 @@ const Programs = () => {
 
   return (
     <Box m="20px">
-      <Header title="Programas" subtitle="transparecnia presupuestal" />
+      <Header title="Programas" subtitle="Transparencia presupuestal" />
 
       <Box
         m="40px 0 0 0"

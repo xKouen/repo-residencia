@@ -154,7 +154,7 @@ const User = () => {
   return (
     <Box m="20px">
    
-    <Header title="Usuarios" subtitle="Lista de usuarios activos" />
+    <Header title="Usuarios" subtitle="Lista de usuarios" />
  
     <Box
       m="40px 0 0 0"

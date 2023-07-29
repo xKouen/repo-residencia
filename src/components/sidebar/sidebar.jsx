@@ -7,6 +7,7 @@ import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
+import HistoryIcon from '@mui/icons-material/History';
 
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -126,7 +127,7 @@ const Sidebar = () => {
             </Typography>
             <Item
               title="Usuarios"
-              to="/user"
+              to="/users"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -139,8 +140,14 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-          
-           
+            <Item
+              title="Periodos"
+              to="/periods"
+              icon={< HistoryIcon/>}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
           </Box>
         </Menu>
       </ProSidebar>
