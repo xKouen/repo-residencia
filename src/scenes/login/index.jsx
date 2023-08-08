@@ -1,52 +1,80 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js";
 import "./style.scss";
 
-import { useForm } from "../../hooks/useForm";
 import Imagen from "../../img/bg_22.jpg";
 import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(3, "El nombre de usuario es muy corto")
+    .max(30, "El nombre de usuario es muy largo")
+    .required("Campo requerido"),
+  password: Yup.string()
+    .min(8, "La contraseña tiene que contener al menos 8 caracteres")
+    .matches(
+      /^(?=.*[A-Z])(?=.*\d)/,
+      "La contraseña debe contener al menos una mayúscula y un número"
+    )
+    .required("Campo requerido"),
+});
 
 export default function Login() {
-  const { form, changed } = useForm({});
-  const [saved, setSaved] = useState("not sended");
+  const [loginStatus, setLoginStatus] = useState("not sended");
 
-  const loginUser = async (e) => {
-    e.preventDefault();
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      try {
+        const response = await fetch("http://localhost:3000/api/user/login", {
+          method: "POST",
+          body: JSON.stringify(values),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-    let userToLogin = form;
+        const data = await response.json();
+        console.log(data);
 
-    let request = await fetch("http://localhost:3000/api/user/login", {
-      method: "POST",
-      body: JSON.stringify(userToLogin),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+        if (data.status === "success") {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
 
-    const data = await request.json();
-    console.log(data);
-
-    if (data.status === "success") {
-      //persists the data in the browser
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      setSaved("login");
-    } else {
-      setSaved("error");
-      if (data.status === "error" && data.message === "Missing data") {
-        setSaved("missing data");
+          setLoginStatus("login");
+        } else {
+          setLoginStatus("error");
+          if (data.status === "error" && data.message === "Missing data") {
+            setLoginStatus("missing data");
+          }
+          if (data.status === "error" && data.message === "Validation failed") {
+            setLoginStatus("validation failed");
+          }
+          if (
+            data.status === "error" &&
+            data.message === "User does not exist"
+          ) {
+            setLoginStatus("user not found");
+          }
+          if (
+            data.status === "error" &&
+            data.message === "Incorrect password"
+          ) {
+            setLoginStatus("incorrect password");
+          }
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
-      if (data.status === "error" && data.message === "Validation failed") {
-        setSaved("validation failed");
-      }
-      if (data.status === "error" && data.message === "User does not exist") {
-        setSaved("user not found");
-      }
-      if (data.status === "error" && data.message === "Incorrect password") {
-        setSaved("incorrect password");
-      }
-    }
-  };
+    },
+  });
+
   return (
     <>
       <div className="half">
@@ -67,51 +95,104 @@ export default function Login() {
                     </p>
                   </div>
 
-                  {saved === "login" ? (
-                    <div className="alert alert-success" role="alert">
+                  {loginStatus === "login" ? (
+                    <div
+                      className="alert alert-success alert-dismissible fade show"
+                      role="alert"
+                    >
                       <strong>Bienvenido!</strong> Has iniciado sesión
-                      correctamente.
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                      ></button>
                     </div>
                   ) : (
                     <div></div>
                   )}
-                  {saved === "error" ? (
-                    <div className="alert alert-danger" role="alert">
-                      <strong>Error!</strong> Error al iniciar sesión.
+                  {loginStatus === "error" ? (
+                    <div
+                      className="alert alert-warning alert-dismissible fade show"
+                      role="alert"
+                    >
+                      <strong>Error!</strong> Error al iniciar sesión
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                      ></button>
                     </div>
                   ) : (
                     <div></div>
                   )}
-                  {saved === "missing data" ? (
-                    <div className="alert alert-danger" role="alert">
+                  {loginStatus === "missing data" ? (
+                    <div
+                      className="alert alert-warning alert-dismissible fade show"
+                      role="alert"
+                    >
                       <strong>Error!</strong> Campos no rellenados
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                      ></button>
                     </div>
                   ) : (
                     <div></div>
                   )}
-                  {saved === "validation failed" ? (
-                    <div className="alert alert-danger" role="alert">
+                  {loginStatus === "validation failed" ? (
+                    <div
+                      className="alert alert-warning alert-dismissible fade show"
+                      role="alert"
+                    >
                       <strong>Error!</strong> El formato de los datos no es
                       válido
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                      ></button>
                     </div>
                   ) : (
                     <div></div>
                   )}
-                  {saved === "user not found" ? (
-                    <div className="alert alert-danger" role="alert">
+                  {loginStatus === "user not found" ? (
+                    <div
+                      className="alert alert-warning alert-dismissible fade show"
+                      role="alert"
+                    >
                       <strong>Error!</strong> No existe ese usuario
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                      ></button>
                     </div>
                   ) : (
                     <div></div>
                   )}
-                  {saved === "incorrect password" ? (
-                    <div className="alert alert-danger" role="alert">
+                  {loginStatus === "incorrect password" ? (
+                    <div
+                      className="alert alert-warning alert-dismissible fade show"
+                      role="alert"
+                    >
                       <strong>Error!</strong> La contraseña es incorrecta
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                      ></button>
                     </div>
                   ) : (
                     <div></div>
                   )}
-                  <form onSubmit={loginUser}>
+                  <form onSubmit={formik.handleSubmit}>
                     <div className="form-group first">
                       <label htmlFor="username">Username</label>
                       <input
@@ -120,36 +201,33 @@ export default function Login() {
                         placeholder="your-email@gmail.com"
                         id="username"
                         name="username"
-                        onChange={changed}
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
                       />
-                    </div>
-                    <div className="form-group last mb-3">
-                      <label htmlFor="password">Password</label>
+                      <div className="error">
+                        {formik.touched.username && formik.errors.username}
+                      </div>
+                      <div className="form-group last mb-3">
+                        <label htmlFor="password">Password</label>
+                        <input
+                          type="password"
+                          className="form-control"
+                          placeholder="Your Password"
+                          id="password"
+                          name="password"
+                          value={formik.values.password}
+                          onChange={formik.handleChange}
+                        />
+                        <div className="error">
+                          {formik.touched.password && formik.errors.password}
+                        </div>
+                      </div>
                       <input
-                        type="password"
-                        className="form-control"
-                        placeholder="Your Password"
-                        id="password"
-                        name="password"
-                        onChange={changed}
+                        type="submit"
+                        value="Iniciar Sesión"
+                        className="btn btn-block btn-primary"
                       />
                     </div>
-
-                    {
-                      //<div className="d-sm-flex mb-5 align-items-center">
-                      //<label className="control control--checkbox mb-3 mb-sm-0"><span className="caption">Remember me</span>
-                      //<input type="checkbox" checked="checked"/>
-                      //<div className="control__indicator"></div>
-                      //</label>
-                      //<span className="ml-auto"><a href="#" className="forgot-pass">Forgot Password</a></span>
-                      //</div>
-                      //</div>
-                    }
-                    <input
-                      type="submit"
-                      value="Iniciar Sesión"
-                      className="btn btn-block btn-primary"
-                    />
                   </form>
                 </div>
               </div>
