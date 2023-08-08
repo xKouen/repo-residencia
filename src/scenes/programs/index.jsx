@@ -18,18 +18,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import { IconButton } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 
-import { ColorModeContext, useMode } from "../../theme";
+import { ColorModeContext } from "../../theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Sidebar from "../../components/sidebar/sidebar";
 import Topbar from "../../components/topbar/topbar";
 
 const Programs = () => {
-  const [themee, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(true);
-
-  const getRowId = (row) => row.name;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [programData, setProgramData] = useState({
+    id: "", // Nuevo campo para el identificador único
     name: "",
     responsible: "",
     annualGoal: "",
@@ -45,16 +42,30 @@ const Programs = () => {
   const iconColor = theme.palette.mode === "dark" ? "white" : "black";
 
   const handleOpenModal = () => {
-    setIsEditMode(false); // Establecer el modo de edición como falso al abrir el modal
+    setIsEditMode(false);
     setIsModalOpen(true);
+    if (!isEditMode) {
+      // Solo generar un nuevo ID si se está agregando un nuevo programa
+      setProgramData((prevData) => ({
+        ...prevData,
+        id: Date.now().toString(),
+      }));
+    }
   };
 
   useEffect(() => {
-    const storedData = localStorage.getItem("programData");
-    if (storedData) {
-      setMockData(JSON.parse(storedData));
+    if (!isModalOpen) {
+      // Restablecer el estado de isEditMode y programData cuando se cierre el modal
+      setIsEditMode(false);
+      setProgramData({
+        id: "",
+        name: "",
+        responsible: "",
+        annualGoal: "",
+        percentage: "",
+      });
     }
-  }, []);
+  }, [isModalOpen]);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -72,44 +83,33 @@ const Programs = () => {
 
   const handleSaveData = () => {
     if (
+      programData.id &&
       programData.name &&
       programData.responsible &&
       programData.annualGoal &&
       programData.percentage
     ) {
       const programIndex = mockData.findIndex(
-        (program) => program.name === programData.name
+        (program) => program.id === programData.id
       );
 
       if (programIndex !== -1) {
-        // El programa ya existe pues lo actualizamo xd
         const updatedData = [...mockData];
-        updatedData[programIndex] = {
-          name: programData.name,
-          responsible: programData.responsible,
-          annualGoal: programData.annualGoal,
-          percentage: programData.percentage,
-        };
+        updatedData[programIndex] = programData;
 
         setMockData(updatedData);
         localStorage.setItem("programData", JSON.stringify(updatedData));
       } else {
-        // El programa no existe en la lista se agrega
-        const newProgram = {
-          name: programData.name,
-          responsible: programData.responsible,
-          annualGoal: programData.annualGoal,
-          percentage: programData.percentage,
-        };
-
-        setMockData((prevData) => [...prevData, newProgram]);
-        localStorage.setItem(
-          "programData",
-          JSON.stringify([...mockData, newProgram])
-        );
+        if (!isEditMode) {
+          // Solo agregar un nuevo programa si no estamos en modo de edición
+          setMockData((prevData) => [...prevData, programData]);
+          localStorage.setItem(
+            "programData",
+            JSON.stringify([...mockData, programData])
+          );
+        }
       }
 
-      handleClearFields();
       handleCloseModal();
       setModalError("");
     } else {
@@ -127,21 +127,18 @@ const Programs = () => {
   };
 
   const handleEditProgram = (id) => {
-    const programToEdit = mockData.find((program) => program.name === id);
+    const programToEdit = mockData.find((program) => program.id === id);
     if (programToEdit) {
-      setProgramData({
-        name: programToEdit.name,
-        responsible: programToEdit.responsible,
-        annualGoal: programToEdit.annualGoal,
-        percentage: programToEdit.percentage,
-      });
-      setIsEditMode(true); // Establecer el modo de edición como verdadero
+      setProgramData(programToEdit);
+      setIsEditMode(true);
       setIsModalOpen(true);
     }
   };
 
+  const getRowId = (row) => row.id;
+
   const handleDeleteProgram = (id) => {
-    const updatedData = mockData.filter((program) => program.name !== id);
+    const updatedData = mockData.filter((program) => program.id !== id);
     setMockData(updatedData);
     localStorage.setItem("programData", JSON.stringify(updatedData));
   };
@@ -179,15 +176,15 @@ const Programs = () => {
           <div className={Styles.icons}>
             <IconButton
               color="primary"
-              style={{ color: iconColor }} // Cambia el color del ícono según el tema
-              onClick={() => actions[0].onClick(row.name)}
+              style={{ color: iconColor }}
+              onClick={() => handleEditProgram(row.id)}
             >
               {actions[0].icon}
             </IconButton>
             <IconButton
               color="secondary"
-              style={{ color: iconColor }} // Cambia el color del ícono según el tema
-              onClick={() => actions[1].onClick(row.name)}
+              style={{ color: iconColor }}
+              onClick={() => handleDeleteProgram(row.id)} // Pasar el "id" en lugar del "name"
             >
               {actions[1].icon}
             </IconButton>
