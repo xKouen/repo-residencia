@@ -18,12 +18,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import { IconButton } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 
-import { ColorModeContext } from "../../theme";
+import { ColorModeContext, useMode } from "../../theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Sidebar from "../../components/sidebar/sidebar";
 import Topbar from "../../components/topbar/topbar";
 
 const Programs = () => {
+  const [themee, colorMode] = useMode();
+  const [isSidebar, setIsSidebar] = useState(true);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [programData, setProgramData] = useState({
     id: "", // Nuevo campo para el identificador único
