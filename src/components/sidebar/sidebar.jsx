@@ -38,7 +38,7 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("Dashboard");
 
   let imageUrl;
-  if (auth.image != "default.png") {
+  if (auth.image !== "default.png") {
     imageUrl = "http://localhost:3000/api/user/avatar/" + auth.image;
   } else {
     imageUrl = avatar;
