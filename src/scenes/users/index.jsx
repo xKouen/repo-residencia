@@ -19,8 +19,11 @@ import Header from "../../components/header";
 import "react-pro-sidebar/dist/css/styles.css";
 import SelectUser from "../../components/selectUser";
 import Styles from "./users.module.scss";
+import useAuth from "../../hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 const User = () => {
+  const { auth } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState({
     name: "",
@@ -158,112 +161,121 @@ const User = () => {
   ];
 
   return (
-    <Box m="20px">
-      <Header title="Usuarios" subtitle="Lista de usuarios" />
+    <>
+      {auth._id ? (
+        <Box m="20px">
+          <Header title="Usuarios" subtitle="Lista de usuarios" />
 
-      <Box
-        m="40px 0 0 0"
-        height="75vh"
-        sx={{
-          // Aquí mantén los estilos de la tabla sin modificar los colores
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-        }}
-      >
-        <DataGrid rows={mockData} columns={columns} />
-        {/* Botón flotante para abrir el modal */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOpenModal}
-          sx={{
-            position: "fixed",
-            display: "flex",
-            flexDirection: "row",
-            top: "150px",
-            right: "25px",
-            borderRadius: "8px", // Hace el botón redondo
-            backgroundColor: "#3E4396", // Color rojo
-            color: "#fff", // Color del texto en el botón
-            width: "100px", // Ancho del botón
-            height: "50px", // Alto del botón
-            alignItems: "flex-start", // Centra el contenido verticalmente
-            fontSize: "12px", // Tamaño del texto en el botón
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", // Agrega una sombra al botón
-            cursor: "pointer", // Cambia el cursor al pasar sobre el botón
-            border: "1px", //Borde del botón
-            "&:hover": {
-              backgroundColor: "#2E7C67",
-            },
-          }}
-        >
-          AGREGAR USUARIO
-        </Button>
-      </Box>
-      {/* Modal para agregar usuarios */}
-      <Dialog open={isModalOpen} onClose={handleCloseModal}>
-        <div className={Styles.titles}>Agregar Usuario</div>
-        {modalError && (
-          <DialogContent className={Styles.mensajeDeError}>
-            {modalError}
-          </DialogContent>
-        )}
-        <DialogContent className={Styles.dialog}>
-          <MuiTextField
-            onChange={handleChange}
-            name="name"
-            value={userData.name}
-            size="small"
-            label="Nombre"
-          />
-          <MuiTextField
-            onChange={handleChange}
-            name="phone"
-            value={userData.phone}
-            size="small"
-            label="Telefono"
-          />
-          <MuiTextField
-            onChange={handleChange}
-            name="email"
-            value={userData.email}
-            size="small"
-            label="Email"
-          />
-          <SelectUser value={userData.role} onChange={handleChangeSelectUser} />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={handleSaveData} color="primary">
-            Guardar
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {error && <div>{error}</div>}
-    </Box>
+          <Box
+            m="40px 0 0 0"
+            height="75vh"
+            sx={{
+              // Aquí mantén los estilos de la tabla sin modificar los colores
+              "& .MuiDataGrid-root": {
+                border: "none",
+              },
+              "& .MuiDataGrid-cell": {
+                borderBottom: "none",
+              },
+              "& .name-column--cell": {
+                color: colors.greenAccent[300],
+              },
+              "& .MuiDataGrid-columnHeaders": {
+                backgroundColor: colors.blueAccent[700],
+                borderBottom: "none",
+              },
+              "& .MuiDataGrid-virtualScroller": {
+                backgroundColor: colors.primary[400],
+              },
+              "& .MuiDataGrid-footerContainer": {
+                borderTop: "none",
+                backgroundColor: colors.blueAccent[700],
+              },
+              "& .MuiCheckbox-root": {
+                color: `${colors.greenAccent[200]} !important`,
+              },
+            }}
+          >
+            <DataGrid rows={mockData} columns={columns} />
+            {/* Botón flotante para abrir el modal */}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleOpenModal}
+              sx={{
+                position: "fixed",
+                display: "flex",
+                flexDirection: "row",
+                top: "150px",
+                right: "25px",
+                borderRadius: "8px", // Hace el botón redondo
+                backgroundColor: "#3E4396", // Color rojo
+                color: "#fff", // Color del texto en el botón
+                width: "100px", // Ancho del botón
+                height: "50px", // Alto del botón
+                alignItems: "flex-start", // Centra el contenido verticalmente
+                fontSize: "12px", // Tamaño del texto en el botón
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", // Agrega una sombra al botón
+                cursor: "pointer", // Cambia el cursor al pasar sobre el botón
+                border: "1px", //Borde del botón
+                "&:hover": {
+                  backgroundColor: "#2E7C67",
+                },
+              }}
+            >
+              AGREGAR USUARIO
+            </Button>
+          </Box>
+          {/* Modal para agregar usuarios */}
+          <Dialog open={isModalOpen} onClose={handleCloseModal}>
+            <div className={Styles.titles}>Agregar Usuario</div>
+            {modalError && (
+              <DialogContent className={Styles.mensajeDeError}>
+                {modalError}
+              </DialogContent>
+            )}
+            <DialogContent className={Styles.dialog}>
+              <MuiTextField
+                onChange={handleChange}
+                name="name"
+                value={userData.name}
+                size="small"
+                label="Nombre"
+              />
+              <MuiTextField
+                onChange={handleChange}
+                name="phone"
+                value={userData.phone}
+                size="small"
+                label="Telefono"
+              />
+              <MuiTextField
+                onChange={handleChange}
+                name="email"
+                value={userData.email}
+                size="small"
+                label="Email"
+              />
+              <SelectUser
+                value={userData.role}
+                onChange={handleChangeSelectUser}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseModal} color="primary">
+                Cancelar
+              </Button>
+              <Button onClick={handleSaveData} color="primary">
+                Guardar
+              </Button>
+            </DialogActions>
+          </Dialog>
+          {error && <div>{error}</div>}
+        </Box>
+      ) : (
+        <Navigate to="/login" />
+      )}
+    </>
   );
 };
 

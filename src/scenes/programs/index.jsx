@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -17,8 +18,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { IconButton } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
+import useAuth from "../../hooks/useAuth";
 
 const Programs = () => {
+  const { auth } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [programData, setProgramData] = useState({
     id: "", // Nuevo campo para el identificador único
@@ -190,123 +193,129 @@ const Programs = () => {
   ];
 
   return (
-    <Box m="20px">
-      <Header title="Programas" subtitle="Transparencia presupuestal" />
+    <>
+      {auth._id ? (
+        <Box m="20px">
+          <Header title="Programas" subtitle="Transparencia presupuestal" />
 
-      <Box
-        m="40px 0 0 0"
-        height="75vh"
-        sx={{
-          // Aquí mantén los estilos de la tabla sin modificar los colores
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-        }}
-      >
-        <DataGrid rows={mockData} columns={columns} getRowId={getRowId} />
-        {/* Botón flotante para abrir el modal */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOpenModal}
-          sx={{
-            position: "fixed",
-            display: "flex",
-            flexDirection: "row",
-            top: "150px",
-            right: "25px",
-            borderRadius: "8px", // Hace el botón redondo
-            backgroundColor: "#3E4396", // Color rojo
-            color: "#fff", // Color del texto en el botón
-            width: "100px", // Ancho del botón
-            height: "50px", // Alto del botón
-            alignItems: "flex-start", // Centra el contenido verticalmente
-            fontSize: "12px", // Tamaño del texto en el botón
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", // Agrega una sombra al botón
-            cursor: "pointer", // Cambia el cursor al pasar sobre el botón
-            border: "1px", //Borde del botón
-            "&:hover": {
-              backgroundColor: "#2E7C67",
-            },
-          }}
-        >
-          AGREGAR PROGRAMA
-        </Button>
-      </Box>
+          <Box
+            m="40px 0 0 0"
+            height="75vh"
+            sx={{
+              // Aquí mantén los estilos de la tabla sin modificar los colores
+              "& .MuiDataGrid-root": {
+                border: "none",
+              },
+              "& .MuiDataGrid-cell": {
+                borderBottom: "none",
+              },
+              "& .name-column--cell": {
+                color: colors.greenAccent[300],
+              },
+              "& .MuiDataGrid-columnHeaders": {
+                backgroundColor: colors.blueAccent[700],
+                borderBottom: "none",
+              },
+              "& .MuiDataGrid-virtualScroller": {
+                backgroundColor: colors.primary[400],
+              },
+              "& .MuiDataGrid-footerContainer": {
+                borderTop: "none",
+                backgroundColor: colors.blueAccent[700],
+              },
+              "& .MuiCheckbox-root": {
+                color: `${colors.greenAccent[200]} !important`,
+              },
+            }}
+          >
+            <DataGrid rows={mockData} columns={columns} getRowId={getRowId} />
+            {/* Botón flotante para abrir el modal */}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleOpenModal}
+              sx={{
+                position: "fixed",
+                display: "flex",
+                flexDirection: "row",
+                top: "150px",
+                right: "25px",
+                borderRadius: "8px", // Hace el botón redondo
+                backgroundColor: "#3E4396", // Color rojo
+                color: "#fff", // Color del texto en el botón
+                width: "100px", // Ancho del botón
+                height: "50px", // Alto del botón
+                alignItems: "flex-start", // Centra el contenido verticalmente
+                fontSize: "12px", // Tamaño del texto en el botón
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", // Agrega una sombra al botón
+                cursor: "pointer", // Cambia el cursor al pasar sobre el botón
+                border: "1px", //Borde del botón
+                "&:hover": {
+                  backgroundColor: "#2E7C67",
+                },
+              }}
+            >
+              AGREGAR PROGRAMA
+            </Button>
+          </Box>
 
-      {/* Modal para agregar programas */}
-      <Dialog open={isModalOpen} onClose={handleCloseModal}>
-        <div className={Styles.titles}>
-          {isEditMode ? "Editar Programa" : "Agregar Programa"}
-        </div>
-        {modalError && (
-          <DialogContent className={Styles.mensajeDeError}>
-            {modalError}
-          </DialogContent>
-        )}
-        <DialogContent className={Styles.dialog}>
-          <MuiTextField
-            onChange={handleChange}
-            name="name"
-            value={programData.name}
-            size="small"
-            label="Programa"
-          />
-          <MuiTextField
-            onChange={handleChange}
-            name="responsible"
-            value={programData.responsible}
-            size="small"
-            label="Responsable"
-          />
-          <MuiTextField
-            onChange={handleChange}
-            name="annualGoal"
-            value={programData.annualGoal}
-            size="small"
-            label="Meta Anual"
-          />
-          <MuiTextField
-            onChange={handleChange}
-            name="percentage"
-            value={programData.percentage}
-            size="small"
-            label="Porcentaje"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={handleSaveData} color="primary">
-            Guardar
-          </Button>
-        </DialogActions>
-      </Dialog>
+          {/* Modal para agregar programas */}
+          <Dialog open={isModalOpen} onClose={handleCloseModal}>
+            <div className={Styles.titles}>
+              {isEditMode ? "Editar Programa" : "Agregar Programa"}
+            </div>
+            {modalError && (
+              <DialogContent className={Styles.mensajeDeError}>
+                {modalError}
+              </DialogContent>
+            )}
+            <DialogContent className={Styles.dialog}>
+              <MuiTextField
+                onChange={handleChange}
+                name="name"
+                value={programData.name}
+                size="small"
+                label="Programa"
+              />
+              <MuiTextField
+                onChange={handleChange}
+                name="responsible"
+                value={programData.responsible}
+                size="small"
+                label="Responsable"
+              />
+              <MuiTextField
+                onChange={handleChange}
+                name="annualGoal"
+                value={programData.annualGoal}
+                size="small"
+                label="Meta Anual"
+              />
+              <MuiTextField
+                onChange={handleChange}
+                name="percentage"
+                value={programData.percentage}
+                size="small"
+                label="Porcentaje"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseModal} color="primary">
+                Cancelar
+              </Button>
+              <Button onClick={handleSaveData} color="primary">
+                Guardar
+              </Button>
+            </DialogActions>
+          </Dialog>
 
-      {/* Mostrar el mensaje de error en la tabla si existe */}
-      {error && <div>{error}</div>}
-    </Box>
+          {/* Mostrar el mensaje de error en la tabla si existe */}
+          {error && <div>{error}</div>}
+        </Box>
+      ) : (
+        <Navigate to="/login" />
+      )}
+    </>
   );
 };
 

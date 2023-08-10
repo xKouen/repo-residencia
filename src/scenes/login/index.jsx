@@ -6,6 +6,8 @@ import Imagen from "../../img/bg_22.jpg";
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import useAuth from "../../hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -22,6 +24,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Login() {
+  const { auth } = useAuth();
+
   const [loginStatus, setLoginStatus] = useState("not sended");
 
   const formik = useFormik({
@@ -77,164 +81,168 @@ export default function Login() {
 
   return (
     <>
-      <div className="half">
-        <div
-          className="bg order-1 order-md-2"
-          style={{ backgroundImage: `url(${Imagen})` }}
-        ></div>
-        <div className="contents order-2 order-md-1">
-          <div className="container">
-            <div className="row align-items-center justify-content-center">
-              <div className="col-md-6">
-                <div className="form-block">
-                  <div className="text-center mb-5">
-                    <h3>Iniciar Sesión</h3>
-                    <p className="mb-4">
-                      Lorem ipsum dolor sit amet elit. Sapiente sit aut eos
-                      consectetur adipisicing.
-                    </p>
-                  </div>
+      {!auth._id ? (
+        <div className="half">
+          <div
+            className="bg order-1 order-md-2"
+            style={{ backgroundImage: `url(${Imagen})` }}
+          ></div>
+          <div className="contents order-2 order-md-1">
+            <div className="container">
+              <div className="row align-items-center justify-content-center">
+                <div className="col-md-6">
+                  <div className="form-block">
+                    <div className="text-center mb-5">
+                      <h3>Iniciar Sesión</h3>
+                      <p className="mb-4">
+                        Lorem ipsum dolor sit amet elit. Sapiente sit aut eos
+                        consectetur adipisicing.
+                      </p>
+                    </div>
 
-                  {loginStatus === "login" ? (
-                    <div
-                      className="alert alert-success alert-dismissible fade show"
-                      role="alert"
-                    >
-                      <strong>Bienvenido!</strong> Has iniciado sesión
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                  {loginStatus === "error" ? (
-                    <div
-                      className="alert alert-warning alert-dismissible fade show"
-                      role="alert"
-                    >
-                      <strong>Error!</strong> Error al iniciar sesión
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                  {loginStatus === "missing data" ? (
-                    <div
-                      className="alert alert-warning alert-dismissible fade show"
-                      role="alert"
-                    >
-                      <strong>Error!</strong> Campos no rellenados
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                  {loginStatus === "validation failed" ? (
-                    <div
-                      className="alert alert-warning alert-dismissible fade show"
-                      role="alert"
-                    >
-                      <strong>Error!</strong> El formato de los datos no es
-                      válido
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                  {loginStatus === "user not found" ? (
-                    <div
-                      className="alert alert-warning alert-dismissible fade show"
-                      role="alert"
-                    >
-                      <strong>Error!</strong> No existe ese usuario
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                  {loginStatus === "incorrect password" ? (
-                    <div
-                      className="alert alert-warning alert-dismissible fade show"
-                      role="alert"
-                    >
-                      <strong>Error!</strong> La contraseña es incorrecta
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                  <form onSubmit={formik.handleSubmit}>
-                    <div className="form-group first">
-                      <label htmlFor="username">Username</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="your-email@gmail.com"
-                        id="username"
-                        name="username"
-                        value={formik.values.username}
-                        onChange={formik.handleChange}
-                      />
-                      <div className="error">
-                        {formik.touched.username && formik.errors.username}
+                    {loginStatus === "login" ? (
+                      <div
+                        className="alert alert-success alert-dismissible fade show"
+                        role="alert"
+                      >
+                        <strong>Bienvenido!</strong> Has iniciado sesión
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="alert"
+                          aria-label="Close"
+                        ></button>
                       </div>
-                      <div className="form-group last mb-3">
-                        <label htmlFor="password">Password</label>
+                    ) : (
+                      <div></div>
+                    )}
+                    {loginStatus === "error" ? (
+                      <div
+                        className="alert alert-warning alert-dismissible fade show"
+                        role="alert"
+                      >
+                        <strong>Error!</strong> Error al iniciar sesión
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="alert"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    {loginStatus === "missing data" ? (
+                      <div
+                        className="alert alert-warning alert-dismissible fade show"
+                        role="alert"
+                      >
+                        <strong>Error!</strong> Campos no rellenados
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="alert"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    {loginStatus === "validation failed" ? (
+                      <div
+                        className="alert alert-warning alert-dismissible fade show"
+                        role="alert"
+                      >
+                        <strong>Error!</strong> El formato de los datos no es
+                        válido
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="alert"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    {loginStatus === "user not found" ? (
+                      <div
+                        className="alert alert-warning alert-dismissible fade show"
+                        role="alert"
+                      >
+                        <strong>Error!</strong> No existe ese usuario
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="alert"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    {loginStatus === "incorrect password" ? (
+                      <div
+                        className="alert alert-warning alert-dismissible fade show"
+                        role="alert"
+                      >
+                        <strong>Error!</strong> La contraseña es incorrecta
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="alert"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    <form onSubmit={formik.handleSubmit}>
+                      <div className="form-group first">
+                        <label htmlFor="username">Username</label>
                         <input
-                          type="password"
+                          type="text"
                           className="form-control"
-                          placeholder="Your Password"
-                          id="password"
-                          name="password"
-                          value={formik.values.password}
+                          placeholder="your-email@gmail.com"
+                          id="username"
+                          name="username"
+                          value={formik.values.username}
                           onChange={formik.handleChange}
                         />
                         <div className="error">
-                          {formik.touched.password && formik.errors.password}
+                          {formik.touched.username && formik.errors.username}
                         </div>
+                        <div className="form-group last mb-3">
+                          <label htmlFor="password">Password</label>
+                          <input
+                            type="password"
+                            className="form-control"
+                            placeholder="Your Password"
+                            id="password"
+                            name="password"
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                          />
+                          <div className="error">
+                            {formik.touched.password && formik.errors.password}
+                          </div>
+                        </div>
+                        <input
+                          type="submit"
+                          value="Iniciar Sesión"
+                          className="btn btn-block btn-primary"
+                        />
                       </div>
-                      <input
-                        type="submit"
-                        value="Iniciar Sesión"
-                        className="btn btn-block btn-primary"
-                      />
-                    </div>
-                  </form>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <Navigate to="/" />
+      )}
     </>
   );
 }
