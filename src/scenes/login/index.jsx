@@ -1,5 +1,4 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js";
 import "./login.module.scss";
 
 import Imagen from "../../img/bg_22.jpg";
@@ -209,9 +208,10 @@ export default function Login() {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="your-email@gmail.com"
+                          placeholder="Correo electrónico"
                           id="username"
                           name="username"
+                          autoComplete="username"
                           value={formik.values.username}
                           onChange={formik.handleChange}
                         />
@@ -223,9 +223,10 @@ export default function Login() {
                           <input
                             type="password"
                             className="form-control"
-                            placeholder="Your Password"
+                            placeholder="Contraseña"
                             id="password"
                             name="password"
+                            autoComplete="current-password"
                             value={formik.values.password}
                             onChange={formik.handleChange}
                           />
