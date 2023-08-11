@@ -19,6 +19,11 @@ const Topbar = () => {
   const handleLogout = () => {
     navigate("/logout");
   };
+
+  const handleSettings = () => {
+    navigate("/settings");
+  };
+
   return (
     <div
       style={{
@@ -111,6 +116,7 @@ const Topbar = () => {
             </IconButton>
             <IconButton
               sx={{ color: theme.palette.mode === "light" ? "black" : "white" }}
+              onClick={handleSettings}
             >
               <SettingsIcon />
             </IconButton>

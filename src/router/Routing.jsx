@@ -6,6 +6,8 @@ import Periods from "../scenes/periods";
 import Login from "../scenes/login";
 import Logout from "../scenes/logout";
 import Users from "../scenes/users";
+import Settings from "../scenes/userSettings";
+import AdminSettings from "../scenes/adminSettings";
 import { AuthProvider } from "../context/authProvider";
 import Topbar from "../components/topbar/topbar";
 import Sidebar from "../components/sidebar/sidebar";
@@ -90,6 +92,44 @@ export const Routing = () => {
                       <main className="content">
                         <Topbar setIsSidebar={setIsSidebar} />
                         <Periods />
+                      </main>
+                    </div>
+                  </ThemeProvider>
+                </ColorModeContext.Provider>
+              </>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <>
+                <ColorModeContext.Provider value={colorMode}>
+                  <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <div className="app">
+                      <Sidebar isSidebar={isSidebar} />
+                      <main className="content">
+                        <Topbar setIsSidebar={setIsSidebar} />
+                        <Settings />
+                      </main>
+                    </div>
+                  </ThemeProvider>
+                </ColorModeContext.Provider>
+              </>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <>
+                <ColorModeContext.Provider value={colorMode}>
+                  <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <div className="app">
+                      <Sidebar isSidebar={isSidebar} />
+                      <main className="content">
+                        <Topbar setIsSidebar={setIsSidebar} />
+                        <AdminSettings />
                       </main>
                     </div>
                   </ThemeProvider>

@@ -7,6 +7,7 @@ import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import HistoryIcon from "@mui/icons-material/History";
 import useAuth from "../../hooks/useAuth";
 import avatar from "../../img/anna.jpg";
@@ -156,6 +157,17 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            {auth && auth.role === "admin" ? (
+              <Item
+                title="Config página principal"
+                to="/admin/settings"
+                icon={<AdminPanelSettingsOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            ) : (
+              ""
+            )}
           </Box>
         </Menu>
       </ProSidebar>
