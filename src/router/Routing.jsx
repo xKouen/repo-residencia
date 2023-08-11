@@ -4,6 +4,7 @@ import Dashboard from "../scenes/dashboard";
 import Programs from "../scenes/programs";
 import Periods from "../scenes/periods";
 import Login from "../scenes/login";
+import Logout from "../scenes/logout";
 import Users from "../scenes/users";
 import { AuthProvider } from "../context/authProvider";
 import Topbar from "../components/topbar/topbar";
@@ -96,6 +97,7 @@ export const Routing = () => {
               </>
             }
           />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </AuthProvider>

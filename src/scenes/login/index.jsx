@@ -25,6 +25,7 @@ const validationSchema = Yup.object().shape({
 
 export default function Login() {
   const { auth } = useAuth();
+  const { setAuth } = useAuth();
 
   const [loginStatus, setLoginStatus] = useState("not sended");
 
@@ -45,13 +46,18 @@ export default function Login() {
         });
 
         const data = await response.json();
-        console.log(data);
 
         if (data.status === "success") {
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
 
           setLoginStatus("login");
+
+          setAuth(data.user);
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         } else {
           setLoginStatus("error");
           if (data.status === "error" && data.message === "Missing data") {
