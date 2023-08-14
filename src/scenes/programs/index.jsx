@@ -30,7 +30,6 @@ const Programs = () => {
     annualGoal: "",
     percentage: "",
   });
-  const [error, setError] = useState("");
   const [modalError, setModalError] = useState("");
   const [mockData, setMockData] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -308,9 +307,6 @@ const Programs = () => {
               </Button>
             </DialogActions>
           </Dialog>
-
-          {/* Mostrar el mensaje de error en la tabla si existe */}
-          {error && <div>{error}</div>}
         </Box>
       ) : (
         <Navigate to="/login" />

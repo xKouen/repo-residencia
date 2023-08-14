@@ -67,7 +67,7 @@ export const Periods = () => {
             <p>
               En este apartado podrás crear los periodos que se usarán para
               crear los programas presupuestarios, esto para agilizar el proceso
-              de creación de estos.
+              de registro de los programas presupuestarios.
             </p>
           </h5>
           <label htmlFor="name" className="form-label">

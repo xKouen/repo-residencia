@@ -18,6 +18,7 @@ export const AdminSettings = () => {
   const [saved, setSaved] = useState("not saved");
   //Estado para guardar los periodos de la petición
   const [data, setData] = useState([]);
+  const [loadingPeriods, setLoadingPeriods] = useState(true);
 
   //Petición para obtener los periodos de la base de datos
   const getPeriods = useCallback(async () => {
@@ -40,7 +41,9 @@ export const AdminSettings = () => {
         //Si la respuesta es correcta, se guardan los datos en el estado setData
         if (data.status === "success") {
           setData(data.periods);
+          setLoadingPeriods(false);
         } else {
+          setLoadingPeriods(false);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -64,13 +67,16 @@ export const AdminSettings = () => {
     validationSchema,
     onSubmit: async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/period/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        });
+        const response = await fetch(
+          "http://localhost:3000/api/period/updatePeriodShowed",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
 
         const data = await response.json();
 
@@ -84,47 +90,54 @@ export const AdminSettings = () => {
     },
   });
 
-  return (
-    <>
-      {auth && auth.role === "Admin" ? (
-        <>
-          <Header title={"Configuración de administrador"} />
-          <h2> Periodo a mostrar en página principal </h2>
-          {saved === "saved" ? (
-            <div
-              className="alert alert-warning alert-dismissible fade show"
-              role="alert"
-            >
-              <strong>Completado!</strong> Periodo guardado con éxito.
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-              ></button>
-            </div>
-          ) : (
-            ""
-          )}
-          <form onSubmit={formik.handleSubmit}>
-            <select className="form-select" aria-label="Default select example">
-              {data.map((item, index) => (
-                <option key={index} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
+  if (loadingPeriods) {
+    <div>Cargando...</div>;
+  } else {
+    return (
+      <>
+        {auth && auth.role === "Admin" ? (
+          <>
+            <Header title={"Configuración de administrador"} />
+            <h2> Periodo a mostrar en página principal </h2>
+            {saved === "saved" ? (
+              <div
+                className="alert alert-warning alert-dismissible fade show"
+                role="alert"
+              >
+                <strong>Completado!</strong> Periodo guardado con éxito.
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                ></button>
+              </div>
+            ) : (
+              ""
+            )}
+            <form onSubmit={formik.handleSubmit}>
+              <select
+                className="form-select"
+                aria-label="Default select example"
+              >
+                {data.map((item, index) => (
+                  <option key={index} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+              <br />
+              <button type="submit" className="btn btn-info">
+                Guardar
+              </button>
+            </form>
             <br />
-            <button type="submit" className="btn btn-info">
-              Guardar
-            </button>
-          </form>
-          <br />
-        </>
-      ) : (
-        <Navigate to="/" />
-      )}
-    </>
-  );
+          </>
+        ) : (
+          <Navigate to="/" />
+        )}
+      </>
+    );
+  }
 };
 export default AdminSettings;
