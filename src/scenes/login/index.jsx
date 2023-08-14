@@ -209,7 +209,7 @@ export default function Login() {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="Correo electrónico"
+                          placeholder="Usuario"
                           id="username"
                           name="username"
                           autoComplete="username"

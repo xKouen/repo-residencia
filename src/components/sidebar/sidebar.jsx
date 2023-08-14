@@ -157,7 +157,7 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {auth && auth.role === "admin" ? (
+            {auth && auth.role === "Admin" ? (
               <Item
                 title="Config página principal"
                 to="/admin/settings"

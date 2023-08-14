@@ -21,7 +21,7 @@ export const AdminSettings = () => {
 
   //Petición para obtener los periodos de la base de datos
   const getPeriods = useCallback(async () => {
-    if (auth && auth.role === "admin") {
+    if (auth && auth.role === "Admin") {
       try {
         const response = await fetch(
           "http://localhost:3000/api/period/getAllPeriods",
@@ -86,7 +86,7 @@ export const AdminSettings = () => {
 
   return (
     <>
-      {auth && auth.role === "admin" ? (
+      {auth && auth.role === "Admin" ? (
         <>
           <Header title={"Configuración de administrador"} />
           <h2> Periodo a mostrar en página principal </h2>

@@ -14,8 +14,6 @@ const validationSchema = Yup.object().shape({
 export const Periods = () => {
   //Obtiene la info de autenticacion
   const { auth } = useAuth();
-  //Consigue el token de la session para usar en la petición fetch
-  const token = localStorage.getItem("token");
 
   const [saved, setSaved] = React.useState("not saved");
 
@@ -26,7 +24,6 @@ export const Periods = () => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        console.log(values);
         const response = await fetch(
           "http://localhost:3000/api/period/registerPeriod",
           {
@@ -34,7 +31,7 @@ export const Periods = () => {
             body: JSON.stringify(values),
             headers: {
               "Content-Type": "application/json",
-              Authorization: token,
+              Authorization: localStorage.getItem("token"),
             },
           }
         );
@@ -45,7 +42,15 @@ export const Periods = () => {
           setSaved("saved");
         } else {
           setSaved("not saved");
-          console.log(data.message);
+          if (data.status === "error" && data.message === "Missing data") {
+            setSaved("missing data");
+          }
+          if (
+            data.status === "error" &&
+            data.message === "User already exists"
+          ) {
+            setSaved("user already exists");
+          }
         }
       } catch (error) {
         console.error("Error:", error);
@@ -68,22 +73,8 @@ export const Periods = () => {
           <label htmlFor="name" className="form-label">
             Nombre de periodo
           </label>
-          {saved === "saved" ? (
-            <div
-              className="alert alert-success alert-dismissible fade show"
-              role="alert"
-            >
-              <strong>Guardado!</strong> Periodo agregado correctamente
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-              ></button>
-            </div>
-          ) : (
-            ""
-          )}
+          <br />
+          {saved === "saved" ? <strong>Guardado con éxito</strong> : ""}
           <form onSubmit={formik.handleSubmit}>
             <input
               type="text"
