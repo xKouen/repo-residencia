@@ -1,4 +1,3 @@
-import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js";
 import useAuth from "../../hooks/useAuth";
@@ -6,16 +5,57 @@ import { Navigate } from "react-router-dom";
 import Header from "../../components/header";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { React, useCallback, useState, useEffect } from "react";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Campo requerido"),
 });
-
 export const Periods = () => {
   //Obtiene la info de autenticacion
   const { auth } = useAuth();
+  const [saved, setSaved] = useState("not saved");
+  const token = localStorage.getItem("token");
+  const [data, setData] = useState([]);
+  const [loadingPeriods, setLoadingPeriods] = useState(true);
 
-  const [saved, setSaved] = React.useState("not saved");
+  const getPeriods = useCallback(async () => {
+    if (auth && auth.role === "Admin") {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/period/getAllPeriods",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+
+        //Obtiene la respuesta de la petición y la convierte a json
+        const data = await response.json();
+        console.log(data);
+        //Si la respuesta es correcta, se guardan los datos en el estado setData
+        if (data.status === "success") {
+          setData(data.periods);
+          setLoadingPeriods(false);
+        } else {
+          setLoadingPeriods(false);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  }, [auth, token]);
+
+  //Funcion para cargar los periodos en el select justo al cargar la página
+  useEffect(() => {
+    const fetchPeriods = async () => {
+      await getPeriods();
+    };
+
+    fetchPeriods();
+  }, [getPeriods]);
 
   const formik = useFormik({
     initialValues: {

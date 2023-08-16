@@ -21,6 +21,30 @@ import Tooltip from "@mui/material/Tooltip";
 import useAuth from "../../hooks/useAuth";
 
 const Programs = () => {
+  useEffect(() => {
+    fetchPrograms();
+  }, []);
+
+  async function fetchPrograms() {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/program/listAllPrograms",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   const { auth } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [programData, setProgramData] = useState({

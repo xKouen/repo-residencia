@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-  periodName: Yup.string().required("Campo requerido"),
+  name: Yup.string().required("Campo requerido"),
 });
 
 export const AdminSettings = () => {
@@ -18,6 +18,7 @@ export const AdminSettings = () => {
   const [saved, setSaved] = useState("not saved");
   //Estado para guardar los periodos de la petición
   const [data, setData] = useState([]);
+  const [currentPeriod, setCurrentPeriod] = useState({ name: "" });
   const [loadingPeriods, setLoadingPeriods] = useState(true);
 
   //Petición para obtener los periodos de la base de datos
@@ -51,26 +52,57 @@ export const AdminSettings = () => {
     }
   }, [auth, token]);
 
+  const getCurrentPeriod = useCallback(async () => {
+    if (auth && auth.role === "Admin") {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/period/getPeriodShowed",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+
+        //Obtiene la respuesta de la petición y la convierte a json
+        const data = await response.json();
+        //Si la respuesta es correcta, se guardan los datos en el estado setData
+        if (data.status === "success") {
+          setCurrentPeriod(data.period[0]);
+          setLoadingPeriods(false);
+        } else {
+          setLoadingPeriods(false);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  }, [auth, token]);
+
   //Funcion para cargar los periodos en el select justo al cargar la página
   useEffect(() => {
     const fetchPeriods = async () => {
       await getPeriods();
+      await getCurrentPeriod();
     };
 
     fetchPeriods();
-  }, [getPeriods]);
+  }, [getPeriods, getCurrentPeriod]);
 
   const formik = useFormik({
     initialValues: {
-      periodName: "",
+      name: "",
     },
     validationSchema,
-    onSubmit: async () => {
+    onSubmit: async (values) => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/period/updatePeriodShowed",
+          "http://localhost:3000/api/period/updatePeriodShowed/",
           {
-            method: "POST",
+            method: "PUT",
+            body: JSON.stringify(values),
             headers: {
               "Content-Type": "application/json",
               Authorization: token,
@@ -115,6 +147,7 @@ export const AdminSettings = () => {
             ) : (
               ""
             )}
+            <h5>Current Period: {currentPeriod.name}</h5>
             <form onSubmit={formik.handleSubmit}>
               <select
                 className="form-select"
