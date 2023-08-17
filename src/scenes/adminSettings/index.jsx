@@ -21,6 +21,9 @@ export const AdminSettings = () => {
   const [currentPeriod, setCurrentPeriod] = useState({ name: "" });
   const [loadingPeriods, setLoadingPeriods] = useState(true);
 
+  // Estado para almacenar el ID del período seleccionado en el formulario
+  const [selectedPeriodName, setSelectedPeriodName] = useState("");
+
   //Petición para obtener los periodos de la base de datos
   const getPeriods = useCallback(async () => {
     if (auth && auth.role === "Admin") {
@@ -99,7 +102,7 @@ export const AdminSettings = () => {
     onSubmit: async (values) => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/period/updatePeriodShowed/",
+          `http://localhost:3000/api/period/updatePeriodShowed/`,
           {
             method: "PUT",
             body: JSON.stringify(values),
@@ -114,6 +117,7 @@ export const AdminSettings = () => {
 
         if (data.status === "success") {
           setSaved("saved");
+          setCurrentPeriod(data.period);
         } else {
         }
       } catch (error) {
@@ -123,7 +127,7 @@ export const AdminSettings = () => {
   });
 
   if (loadingPeriods) {
-    <div>Cargando...</div>;
+    return <div>Cargando...</div>;
   } else {
     return (
       <>
@@ -132,18 +136,7 @@ export const AdminSettings = () => {
             <Header title={"Configuración de administrador"} />
             <h2> Periodo a mostrar en página principal </h2>
             {saved === "saved" ? (
-              <div
-                className="alert alert-warning alert-dismissible fade show"
-                role="alert"
-              >
-                <strong>Completado!</strong> Periodo guardado con éxito.
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"
-                ></button>
-              </div>
+              <strong>Completado! Periodo guardado correctamente</strong>
             ) : (
               ""
             )}
@@ -152,9 +145,14 @@ export const AdminSettings = () => {
               <select
                 className="form-select"
                 aria-label="Default select example"
+                name="name"
+                id="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
               >
+                <option value="">Elije un periodo</option>
                 {data.map((item, index) => (
-                  <option key={index} value={item.id}>
+                  <option key={index} value={item.name}>
                     {item.name}
                   </option>
                 ))}
