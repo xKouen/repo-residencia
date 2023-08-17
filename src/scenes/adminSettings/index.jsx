@@ -119,6 +119,15 @@ export const AdminSettings = () => {
           setSaved("saved");
           setCurrentPeriod(data.period);
         } else {
+          if (data.status === "error" && data.message === "Period not found") {
+            setSaved("period not found");
+          }
+          if (
+            data.status === "error" &&
+            data.message === "Internal server error"
+          ) {
+            setSaved("internal server error");
+          }
         }
       } catch (error) {
         console.error("Error:", error);
@@ -137,6 +146,16 @@ export const AdminSettings = () => {
             <h2> Periodo a mostrar en página principal </h2>
             {saved === "saved" ? (
               <strong>Completado! Periodo guardado correctamente</strong>
+            ) : (
+              ""
+            )}
+            {saved === "period not found" ? (
+              <strong>Error! Periodo no encontrado</strong>
+            ) : (
+              ""
+            )}
+            {saved === "internal server error" ? (
+              <strong>Ha ocurrido un error en el servidor</strong>
             ) : (
               ""
             )}
