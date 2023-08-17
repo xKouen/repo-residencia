@@ -85,11 +85,26 @@ export const Periods = () => {
           if (data.status === "error" && data.message === "Missing data") {
             setSaved("missing data");
           }
+          if (data.status === "error" && data.message === "Validation failed") {
+            setSaved("validation failed");
+          }
           if (
             data.status === "error" &&
-            data.message === "User already exists"
+            data.message === "Period already exists"
           ) {
-            setSaved("user already exists");
+            setSaved("period already exists");
+          }
+          if (
+            data.status === "error" &&
+            data.message === "Error in the request"
+          ) {
+            setSaved("error in the request");
+          }
+          if (
+            data.status === "error" &&
+            data.message === "Error saving period"
+          ) {
+            setSaved("error saving period");
           }
         }
       } catch (error) {
@@ -115,6 +130,27 @@ export const Periods = () => {
           </label>
           <br />
           {saved === "saved" ? <strong>Guardado con éxito</strong> : ""}
+          {saved === "period already exists" ? (
+            <strong>El periodo ya existe</strong>
+          ) : (
+            ""
+          )}
+          {saved === "missing data" ? <strong>Faltan datos</strong> : ""}
+          {saved === "validation failed" ? (
+            <strong>Datos inválidos</strong>
+          ) : (
+            ""
+          )}
+          {saved === "error in the request" ? (
+            <strong>Ha ocurrido un error en el servidor</strong>
+          ) : (
+            ""
+          )}
+          {saved === "error saving period" ? (
+            <strong>Ha ocurrido un error al guardar el periodo</strong>
+          ) : (
+            ""
+          )}
           <form onSubmit={formik.handleSubmit}>
             <input
               type="text"
